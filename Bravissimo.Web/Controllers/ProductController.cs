@@ -1,6 +1,7 @@
 ﻿using Bravissimo.Web.Data;
 using Bravissimo.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,14 @@ namespace Bravissimo.Web.Controllers
 
         public IActionResult Upsert(int? Id)
         {
+            IEnumerable<SelectListItem> CategoryDropDown = _db.Categories.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.Id.ToString()
+            });
+
+            ViewBag.CategoryDropDown = CategoryDropDown;
+
             Product product = new Product();
             if(Id == null)
             {

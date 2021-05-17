@@ -1,13 +1,13 @@
 ﻿@model Bravissimo.Web.Models.Product
 
-@{ 
+@{
     var title = "Create Product";
 }
 <form class="post" enctype="multipart/form-data">
-    @if (Model.Id != null && Model.Id != 0)
+    @if (Model.Id != 0)
     {
         title = "Edit Product";
-    <input asp-for="Id" hidden/>
+        <input asp-for="Id" hidden />
     }
     <div class="border p-3">
         <div class="form-group row">
@@ -20,7 +20,7 @@
                         <label asp-for="Name"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Name" class="form-control"/>
+                        <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                 </div>
@@ -29,11 +29,11 @@
                         <label asp-for="Price"></label>
                     </div>
                     <div class="col-8">
-                        <input asp-for="Price" class="form-control"/>
+                        <input asp-for="Price" class="form-control" />
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-grop row">
+                <div class="form-group row">
                     <div class="col-4">
                         <label asp-for="Description"></label>
                     </div>
@@ -42,22 +42,60 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-grop row">
+                <div class="form-group row">
                     <div class="col-4">
                         Image
                     </div>
                     <div class="col-8">
-                        <input type="file" name="files" id="uploadBox" multiple class="form-control"/>
+                        <input type="file" name="files" id="uploadBox" multiple class="form-control" />
                     </div>
                 </div>
-                <div class="form-grop row">
+                <div class="form-group row">
+                    <div class="col-4">
+                        <label asp-for="CategoryId"></label>
+                    </div>
+                    <div class="col-8">
+                        <select asp-for="CategoryId" asp-items="@ViewBag.CategoryDropDown" class="form-control">
+                            <option disabled selected>--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <div class="col-8 offset-4 row">
                         <div class="col">
-                            <input type="submit" class="btn btn-info w-100" value="Update"/>
+                            @if (Model.Id != 0)
+                            {
+                                //update
+                            
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            
+                                    }
+                            else
+                            {
+                                //create
+                        
+                            <input type="submit" onclick="return validateInput()" class="btn btn-info w-100" value="Create" />
+                        
+                                    }
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100"> <i class="fas fa-sign-out-alt"></i> Back</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-4">
+
+            </div>
         </div>
     </div>
+    </div>
 </form>
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial" />
+
+    }
+}
