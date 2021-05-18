@@ -1,21 +1,24 @@
 ﻿using Bravissimo.Web.Data;
 using Bravissimo.Web.Models;
+using Bravissimo.Web.Models.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bravissimo.Web.Controllers
 {
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;
-
-        public ProductController(ApplicationDbContext db)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -30,42 +33,77 @@ namespace Bravissimo.Web.Controllers
 
         public IActionResult Upsert(int? Id)
         {
-            IEnumerable<SelectListItem> CategoryDropDown = _db.Categories.Select(i => new SelectListItem
+            /*IEnumerable<SelectListItem> CategoryDropDown = _db.Categories.Select(i => new SelectListItem
+             {
+             Text = i.Name,
+             Value = i.Id.ToString()
+             });
+
+             //ViewBag.CategoryDropDown = CategoryDropDown;
+
+             ViewData["CategoryDropDown"] = CategoryDropDown;
+
+             Product product = new Product();*/
+
+
+            ProductVM productVM = new ProductVM()
             {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            });
+                Product = new Product(),
+                CategorySelectLIst = _db.Categories.Select(s => new SelectListItem
+                {
+                    Text = s.Name,
+                    Value = s.Id.ToString()
+                })
+            };
 
-            ViewBag.CategoryDropDown = CategoryDropDown;
-
-            Product product = new Product();
             if(Id == null)
             {
-                return View(product);
+                return View(productVM);
             }
             else
             {
-                product = _db.Products.Find(Id);
-                if(product == null)
+                productVM.Product = _db.Products.Find(Id);
+                if(productVM.Product == null)
                 {
                     return NotFound();
                 }
 
-                return View(product);
+                return View(productVM);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Product obj)
+        public IActionResult Upsert(ProductVM productVM)
         {
             if (ModelState.IsValid)
             {
-                _db.Products.Add(obj);
+                var files = HttpContext.Request.Form.Files;
+                string webRootPath = _webHostEnvironment.WebRootPath;
+
+                if(productVM.Product.Id == 0)
+                {
+                    string upload = webRootPath + WC.ImagePath;
+                    string fileName = Guid.NewGuid().ToString();
+                    string extension = Path.GetExtension(files[0].FileName);
+
+                    using (var fileStream = new FileStream(Path.Combine(upload, fileName+extension), FileMode.Create))
+                    {
+                        files[0].CopyTo(fileStream);
+                    }
+                    productVM.Product.Image = fileName + extension;
+
+                    _db.Products.Add(productVM.Product);
+                }
+                else
+                {
+                    //uploading
+                    
+                }
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return View();
         }
     }
 }
