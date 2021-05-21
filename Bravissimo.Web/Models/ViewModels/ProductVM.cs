@@ -10,5 +10,6 @@ namespace Bravissimo.Web.Models.ViewModels
     {
         public Product Product { get; set; }
         public IEnumerable<SelectListItem> CategorySelectLIst { get; set; }
+        public IEnumerable<SelectListItem> ApplicationTypeSelectList { get; set; }
     }
 }

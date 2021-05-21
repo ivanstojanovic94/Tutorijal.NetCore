@@ -151,4 +151,4 @@ C:\Users\stoja\source\repos\Bravissimo.Web\Bravissimo.Web\bin\Debug\net5.0\runti
 C:\Users\stoja\source\repos\Bravissimo.Web\Bravissimo.Web\bin\Debug\net5.0\Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
 C:\Users\stoja\source\repos\Bravissimo.Web\Bravissimo.Web\bin\Debug\net5.0\Microsoft.DotNet.PlatformAbstractions.dll
 C:\Users\stoja\source\repos\Bravissimo.Web\Bravissimo.Web\obj\Debug\net5.0\Razor\Views\Product\Upsert.cshtml.g.cs
-C:\Users\stoja\source\repos\Bravissimo.Web\Bravissimo.Web\obj\Debug\net5.0\Bravissimo.Web.csprojAssemblyReference.cache
+C:\Users\stoja\source\repos\Bravissimo.Web\Bravissimo.Web\obj\Debug\net5.0\Razor\Views\Product\Delete.cshtml.g.cs
