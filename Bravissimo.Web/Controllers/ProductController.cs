@@ -23,13 +23,13 @@ namespace Bravissimo.Web.Controllers
         }
         public IActionResult Index()
         {
-            IEnumerable<Product> objList = _db.Products;
+            IEnumerable<Product> objList = _db.Products.Include(u => u.Category).Include(u => u.ApplicationType);
 
-            foreach(var obj in objList)
+/*            foreach(var obj in objList)
             {
                 obj.Category = _db.Categories.FirstOrDefault(s => s.Id == obj.CategoryId);
                 obj.ApplicationType = _db.ApplicationTypes.FirstOrDefault(i => i.Id == obj.ApplicationTypeId);
-            }
+            }*/
             return View(objList);
         }
 

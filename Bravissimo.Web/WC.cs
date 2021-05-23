@@ -7,6 +7,8 @@ namespace Bravissimo.Web
 {
     public static class WC
     {
-        public static string ImagePath = @"\images\product";
+        public static string ImagePath = @"\images\product\";
+
+        public static string SessionCart = "ShoppingCartsession";
     }
 }
